@@ -17,7 +17,7 @@ service mails:
 ## Use:
 ## Get repository:
 ```bash
-gh repo clone sdebby/TempMailCLI
+git repo clone sdebby/TempMailCLI
 ```
 
 ## Install requirements
