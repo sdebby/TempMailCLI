@@ -151,7 +151,7 @@ def PrintMsg(msgs):
                 print('subject: '+msgs[N]['subject'])
                 print('Body: '+msgs[N]['body'])
                 print('Has attachment: '+str(msgs[N]['hasAttachments']))
-                print('Craeted '+msgs[N]['createdAt'])
+                print('Created '+msgs[N]['createdAt'])
                 print("\033[95m {}\033[00m" .format('-'*20))
 
 def CheckMsgNo(msgs):
