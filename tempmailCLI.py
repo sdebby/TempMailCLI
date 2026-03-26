@@ -1,5 +1,4 @@
-# 23.04.2023
-
+# 26.03.2026
 # temp mail server
 # using mail.tm
 
@@ -28,7 +27,6 @@ urlToken=urlBase+'/token'
 emailLen=16
 passLen=10
 MsgInServer=0
-
 def GetDomain():
     try:
         resp=requests.get(urlDomain+'?page=1')
