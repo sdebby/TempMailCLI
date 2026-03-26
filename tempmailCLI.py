@@ -113,75 +113,81 @@ def GetMe(hdr):
         logging.error('DelAccount Error '+str(e))
         return '0'
 
-print("\033[93m {}\033[00m" .format('Temporary email address CLI'))    
+def main():
+    global hdr
 
-# 1 get valid domains
-domn=GetDomain()
-if not domn=='0':
-    UsrMail = ''.join(random.sample(string.ascii_lowercase+string.digits,emailLen))+'@'+str(domn) 
-    print("\033[96m {}\033[00m" .format('EMAIL: '+UsrMail))
-else: sys.exit()
+    print("\033[93m {}\033[00m" .format('Temporary email address CLI'))
 
-# 2 register account
-UsrPass=''.join(random.sample(string.ascii_letters+string.digits,passLen))
-account=RegAccount(UsrMail,UsrPass)
-if not account=='0':
-    accountID=account['id']
-    print('Account id: '+accountID)
-else: sys.exit()
-
-# 3 get token
-UsrToken=GetToken(UsrMail,UsrPass)
-if not UsrToken=='0':
-    # print('TOKEN:'+UsrToken)
-    pass
-else: sys.exit()
-
-# 4 update header for JWT token
-hdr = {'Authorization':'Bearer '+UsrToken}
-
-def PrintMsg(msgs):
-        print('total messages: '+str(len(msgs))+'\n'+'-'*20)
-        global MsgInServer
-        MsgNo=len(msgs) - MsgInServer
-        MsgInServer = len(msgs)
-        if not MsgNo == 0:
-            for N in range(MsgNo):
-                print ('from: '+msgs[N]['from'])
-                print('subject: '+msgs[N]['subject'])
-                print('Body: '+msgs[N]['body'])
-                print('Has attachment: '+str(msgs[N]['hasAttachments']))
-                print('Created '+msgs[N]['createdAt'])
-                print("\033[95m {}\033[00m" .format('-'*20))
-
-def CheckMsgNo(msgs):
-    try:
-        if len(msgs) > MsgInServer:
-            return True
-        else:
-            return False
-    except:
-        return False
-
-def CheckMsg():
-    msgs=GetMsg(hdr)
-    if not msgs=='0':
-        if CheckMsgNo(msgs):
-            PrintMsg(msgs)
-        else:
-            logging.info('No New messages')
+    # 1 get valid domains
+    domn=GetDomain()
+    if not domn=='0':
+        UsrMail = ''.join(random.sample(string.ascii_lowercase+string.digits,emailLen))+'@'+str(domn)
+        print("\033[96m {}\033[00m" .format('EMAIL: '+UsrMail))
     else: sys.exit()
 
-schedule.every(10).seconds.do(CheckMsg)
+    # 2 register account
+    UsrPass=''.join(random.sample(string.ascii_letters+string.digits,passLen))
+    account=RegAccount(UsrMail,UsrPass)
+    if not account=='0':
+        accountID=account['id']
+        print('Account id: '+accountID)
+    else: sys.exit()
 
-while True:
-# start infinate loop
-    try:
-        schedule.run_pending()
-        time.sleep(1)
-    except KeyboardInterrupt as e:
-        print(' Ctrl-C presses\nExiting program\nDeleting account')
-        accountID=GetMe(hdr)['id']
-        if DelAccount(accountID,hdr):
-            print("\033[91m {}\033[00m" .format('--Account deleted--'))
-        break
+    # 3 get token
+    UsrToken=GetToken(UsrMail,UsrPass)
+    if not UsrToken=='0':
+        # print('TOKEN:'+UsrToken)
+        pass
+    else: sys.exit()
+
+    # 4 update header for JWT token
+    hdr = {'Authorization':'Bearer '+UsrToken}
+
+    def PrintMsg(msgs):
+            print('total messages: '+str(len(msgs))+'\n'+'-'*20)
+            global MsgInServer
+            MsgNo=len(msgs) - MsgInServer
+            MsgInServer = len(msgs)
+            if not MsgNo == 0:
+                for N in range(MsgNo):
+                    print ('from: '+msgs[N]['from'])
+                    print('subject: '+msgs[N]['subject'])
+                    print('Body: '+msgs[N]['body'])
+                    print('Has attachment: '+str(msgs[N]['hasAttachments']))
+                    print('Created '+msgs[N]['createdAt'])
+                    print("\033[95m {}\033[00m" .format('-'*20))
+
+    def CheckMsgNo(msgs):
+        try:
+            if len(msgs) > MsgInServer:
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def CheckMsg():
+        msgs=GetMsg(hdr)
+        if not msgs=='0':
+            if CheckMsgNo(msgs):
+                PrintMsg(msgs)
+            else:
+                logging.info('No New messages')
+        else: sys.exit()
+
+    schedule.every(10).seconds.do(CheckMsg)
+
+    while True:
+    # start infinate loop
+        try:
+            schedule.run_pending()
+            time.sleep(1)
+        except KeyboardInterrupt as e:
+            print(' Ctrl-C presses\nExiting program\nDeleting account')
+            accountID=GetMe(hdr)['id']
+            if DelAccount(accountID,hdr):
+                print("\033[91m {}\033[00m" .format('--Account deleted--'))
+            break
+
+if __name__ == '__main__':
+    main()

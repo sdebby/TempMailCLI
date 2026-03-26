@@ -1,0 +1,11 @@
+[project]
+name = "TempMailCLI"
+version = "1.0.0"
+dependencies = [
+    "schedule",
+    "beautifulsoup4",
+    "requests",
+]
+
+[project.scripts]
+tempmailcli = "tempmailCLI:main"
