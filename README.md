@@ -26,10 +26,15 @@ cd TemMailCLI
 pip install -r requirements.txt
 ```
 
+## install via pip+git
+```bash
+pip install git+https://github.com/sdebby/TempMailCLI.git
+```
+
 ## Run
 ```bash
 python tempmailCLI.py
 ```
-You will get a random temporary mail address from mail services.
+You will get a random temporary mail address from mail.tm email services.
 When new mail arrived, it will be displayed on the terminal.
 Press CTRL-C to exit script and delete mail account.
